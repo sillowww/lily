@@ -10,7 +10,7 @@
   "repository": {
     "url": "https://github.com/sillowww/lily"
   },
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": " a small logging library for javascript.",
   "main": "dist/main.js",
   "license": "GPL-3.0-only",
@@ -21,13 +21,16 @@
     "check": "bunx biome check --write",
     "docs": "typedoc",
     "clean": "rm -rf dist docs",
-    "release": "changeset publish"
+    "cs:release": "changeset publish",
+    "cs:version": "changeset version",
+    "cs:new": "changeset"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.4",
     "@types/bun": "latest",
     "typedoc": "^0.28.5",
-    "typedoc-plugin-markdown": "^4.7.0"
+    "typedoc-plugin-markdown": "^4.7.0",
+    "@changesets/cli": "^2.29.5"
   },
   "peerDependencies": {
     "typescript": "^5"
