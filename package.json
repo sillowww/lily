@@ -11,6 +11,9 @@
   "repository": {
     "url": "https://github.com/sillowww/lily"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.1.0",
   "description": " a small logging library for javascript.",
   "main": "dist/main.js",
