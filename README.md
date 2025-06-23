@@ -343,4 +343,4 @@ app.use((req, res, next) => {
 
 ## license
 
-gpl-3.0 - see [license](LICENSE.GPL-3.0.md) file for details.
+gpl-3.0 - see [LICENSE.GPL-3.0] for details.
