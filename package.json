@@ -1,42 +1,51 @@
 {
-  "name": "@sillowww/lily",
-  "module": "src/index.ts",
-  "type": "module",
-  "private": false,
-  "author": {
-    "name": "willow",
-    "email": "hai@wlo.moe",
-    "url": "https://wlo.moe"
-  },
-  "repository": {
-    "url": "https://github.com/sillowww/lily"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "version": "0.1.0",
-  "description": " a small logging library for javascript.",
-  "main": "dist/main.js",
-  "license": "GPL-3.0-only",
-  "scripts": {
-    "build": "tsc",
-    "fmt": "bunx biome format --write",
-    "lint": "bunx biome lint --write",
-    "check": "bunx biome check --write",
-    "docs": "typedoc",
-    "clean": "rm -rf dist docs",
-    "cs:publish": "changeset publish",
-    "cs:version": "changeset version",
-    "cs:new": "changeset"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.0.4",
-    "@types/bun": "latest",
-    "typedoc": "^0.28.5",
-    "typedoc-plugin-markdown": "^4.7.0",
-    "@changesets/cli": "^2.29.5"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+	"name": "@sillowww/lily",
+	"module": "dist/index.js",
+	"type": "module",
+	"private": false,
+	"author": {
+		"name": "willow",
+		"email": "hai@wlo.moe",
+		"url": "https://wlo.moe"
+	},
+	"repository": {
+		"url": "https://github.com/sillowww/lily"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"version": "0.1.0",
+	"description": "a small logging library for javascript.",
+	"main": "dist/index.js",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"license": "GPL-3.0-only",
+	"scripts": {
+		"build": "tsc",
+		"fmt": "bunx biome format --write",
+		"lint": "bunx biome lint --write",
+		"check": "bunx biome check --write",
+		"docs": "typedoc",
+		"clean": "rm -rf dist docs",
+		"cs:publish": "changeset publish",
+		"cs:version": "changeset version",
+		"cs:new": "changeset"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.4",
+		"@types/bun": "latest",
+		"typedoc": "^0.28.5",
+		"typedoc-plugin-markdown": "^4.7.0",
+		"@changesets/cli": "^2.29.5"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"files": [
+		"dist/**/*"
+	]
 }
