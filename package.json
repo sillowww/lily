@@ -2,6 +2,14 @@
 	"name": "@sillowww/lily",
 	"module": "src/index.ts",
 	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"fmt": "bunx biome format --write",
+		"lint": "bunx biome lint --write",
+		"check": "bunx biome check --write",
+		"docs": "typedoc",
+		"clean": "rm -rf dist docs"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "2.0.4",
 		"@types/bun": "latest",
