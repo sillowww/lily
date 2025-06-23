@@ -2,6 +2,7 @@
   "name": "@sillowww/lily",
   "module": "src/index.ts",
   "type": "module",
+  "private": false,
   "author": {
     "name": "willow",
     "email": "hai@wlo.moe",
