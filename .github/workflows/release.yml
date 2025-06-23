@@ -1,0 +1,86 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+      - test-ci
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  # release:
+  #   name: release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout repo
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: setup bun
+  #       uses: oven-sh/setup-bun@v1
+
+  #     - name: install Dependencies
+  #       run: bun install --frozen-lockfile
+
+  #     - name: build packages
+  #       run: bun run build
+
+  #     - name: create release pull request/publish to npm
+  #       id: changesets
+  #       uses: changesets/action@v1
+  #       with:
+  #         version: bun changeset version
+  #         publish: bun run release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  build-docs:
+    name: build docs
+    runs-on: ubuntu-latest
+    # needs: release
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: build docs
+        run: bun run docs
+
+      - name: upload statics as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+  deploy-docs:
+    name: deploy docs
+    runs-on: ubuntu-latest
+    needs: build-docs
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: deploy to pages
+        id: deployment
+        uses: actions/deploy-pages@v4

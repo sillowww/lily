@@ -20,7 +20,8 @@
     "lint": "bunx biome lint --write",
     "check": "bunx biome check --write",
     "docs": "typedoc",
-    "clean": "rm -rf dist docs"
+    "clean": "rm -rf dist docs",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.4",
