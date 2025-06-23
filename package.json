@@ -1,0 +1,14 @@
+{
+	"name": "@sillowww/lily",
+	"module": "src/index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "2.0.4",
+		"@types/bun": "latest",
+		"typedoc": "^0.28.5",
+		"typedoc-plugin-markdown": "^4.7.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"entryPoints": ["src"],
+	"entryPointStrategy": "Expand",
+	"out": "docs",
+	"tsconfig": "./tsconfig.json",
+	"name": "lily"
+}
