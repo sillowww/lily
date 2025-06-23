@@ -10,7 +10,7 @@
   "repository": {
     "url": "https://github.com/sillowww/lily"
   },
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": " a small logging library for javascript.",
   "main": "dist/main.js",
   "license": "GPL-3.0-only",
