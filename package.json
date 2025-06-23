@@ -21,7 +21,7 @@
     "check": "bunx biome check --write",
     "docs": "typedoc",
     "clean": "rm -rf dist docs",
-    "cs:release": "changeset publish",
+    "cs:publish": "changeset publish",
     "cs:version": "changeset version",
     "cs:new": "changeset"
   },
