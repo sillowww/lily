@@ -27,13 +27,14 @@ export class ConsoleFormatter {
 	 * instances
 	 */
 	private static scopeColourMap = new Map<string, string>();
+	options: FormatterOptions;
 
 	/**
 	 * creates a new console formatter with the specified options.
 	 *
 	 * @param options - formatting configuration options
 	 */
-	constructor(private options: FormatterOptions = {}) {
+	constructor(options: FormatterOptions = {}) {
 		this.options = {
 			timestamp: true,
 			colourize: true,

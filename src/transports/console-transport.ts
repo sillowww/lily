@@ -1,5 +1,7 @@
+import { isBrowser } from "../environment";
+import { BrowserConsoleFormatter } from "../formatters/browser-console-formatter";
 import { ConsoleFormatter } from "../formatters/console-formatter";
-import type { LogEntry, Transport } from "../types";
+import { type LogEntry, LogLevel, type Transport } from "../types";
 
 /**
  * transport that outputs log entries to the console.
@@ -18,12 +20,25 @@ import type { LogEntry, Transport } from "../types";
  * ```
  */
 export class ConsoleTransport implements Transport {
+	private formatter: ConsoleFormatter;
+	private browserFormatter?: BrowserConsoleFormatter;
 	/**
 	 * creates a new console transport.
 	 *
 	 * @param formatter - the formatter to use for log entries. defaults to ConsoleFormatter
 	 */
-	constructor(private formatter = new ConsoleFormatter()) {}
+	constructor(formatter?: ConsoleFormatter) {
+		this.formatter = formatter || new ConsoleFormatter();
+
+		if (isBrowser) {
+			this.browserFormatter = new BrowserConsoleFormatter({
+				timestamp: this.formatter.options.timestamp,
+				colourize: this.formatter.options.colourize,
+				showScope: this.formatter.options.showScope,
+				timeFormat: this.formatter.options.timeFormat,
+			});
+		}
+	}
 
 	/**
 	 * outputs a log entry to the console.
@@ -39,12 +54,45 @@ export class ConsoleTransport implements Transport {
 	 * ```
 	 */
 	log(entry: LogEntry): void {
-		const formatted = this.formatter.format(entry);
+		const consoleMethod = this.getConsoleMethod(entry.level);
 
-		if (entry.args.length > 0) {
-			console.log(formatted, ...entry.args);
+		if (isBrowser && this.browserFormatter) {
+			const [format, ...styles] = this.browserFormatter.formatForBrowser(entry);
+
+			if (entry.args.length > 0) {
+				consoleMethod(format, ...styles, ...entry.args);
+			} else {
+				consoleMethod(format, ...styles);
+			}
 		} else {
-			console.log(formatted);
+			const formatted = this.formatter.format(entry);
+
+			if (entry.args.length > 0) {
+				consoleMethod(formatted, ...entry.args);
+			} else {
+				consoleMethod(formatted);
+			}
+		}
+	}
+
+	/**
+	 * maps log levels to appropriate console methods.
+	 */
+	private getConsoleMethod(level: LogLevel): (...args: unknown[]) => void {
+		switch (level) {
+			case LogLevel.TRACE:
+				return console.trace?.bind(console) || console.log.bind(console);
+			case LogLevel.DEBUG:
+				return console.debug?.bind(console) || console.log.bind(console);
+			case LogLevel.INFO:
+				return console.info?.bind(console) || console.log.bind(console);
+			case LogLevel.WARN:
+				return console.warn?.bind(console) || console.log.bind(console);
+			case LogLevel.ERROR:
+			case LogLevel.FATAL:
+				return console.error?.bind(console) || console.log.bind(console);
+			default:
+				return console.log.bind(console);
 		}
 	}
 }

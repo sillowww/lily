@@ -1,3 +1,4 @@
+import { getEnv } from "./environment";
 import { ConsoleTransport } from "./transports/console-transport";
 import {
 	type LogEntry,
@@ -150,12 +151,12 @@ export class Logger {
 	 * @private
 	 */
 	private initializeFromEnvironment(): void {
-		const envLevel = process.env.LOG_LEVEL?.toUpperCase();
+		const envLevel = getEnv("LOG_LEVEL")?.toUpperCase();
 		if (envLevel && envLevel in LogLevel) {
 			this.options.level = LogLevel[envLevel as keyof typeof LogLevel];
 		}
 
-		if (process.env.NO_COLOUR || process.env.NODE_ENV === "test") {
+		if (getEnv("NO_COLOUR") || getEnv("NODE_ENV") === "test") {
 			this.options.colourize = false;
 		}
 	}

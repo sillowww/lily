@@ -4,7 +4,7 @@
 		"rootDir": "./src",
 
 		// Environment setup & latest features
-		"lib": ["ESNext"],
+		"lib": ["ESNext", "DOM"],
 		"target": "ESNext",
 		"module": "Preserve",
 		"moduleDetection": "force",

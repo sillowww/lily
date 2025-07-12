@@ -1,33 +1,34 @@
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { COLOURS } from "./colours";
+import { getPackageName, isBrowser } from "./environment";
 import { ConsoleFormatter } from "./formatters/console-formatter";
 import { JsonFormatter } from "./formatters/json-formatter";
 import { Logger } from "./logger";
 import { ConsoleTransport } from "./transports/console-transport";
-import { FileTransport } from "./transports/file-transport";
 import { LogLevel } from "./types";
 
-/**
- * attempts to read the package name from package.json for default logger naming.
- * falls back to "app" if package.json cannot be read.
- *
- * @returns the package name or "app" as fallback
- */
-const getPackageName = (): string => {
-	try {
-		const __filename = fileURLToPath(import.meta.url);
-		const __dirname = dirname(__filename);
-		const packagePath = join(__dirname, "..", "package.json");
-		const packageContent = readFileSync(packagePath, "utf-8");
-		const packageJson = JSON.parse(packageContent) as { name?: string };
-		return packageJson.name || "app";
-	} catch (_error) {
-		return "app";
-	}
-};
+type FileTransportType =
+	typeof import("./transports/file-transport").FileTransport;
+type BrowserStorageTransportType =
+	typeof import("./transports/browser-storage-transport").BrowserStorageTransport;
+type BrowserFileTransportType =
+	typeof import("./transports/file-transport-browser").BrowserFileTransport;
+
+let FileTransport: FileTransportType | undefined;
+let BrowserStorageTransport: BrowserStorageTransportType | undefined;
+let BrowserFileTransport: BrowserFileTransportType | undefined;
+
+if (!isBrowser) {
+	import("./transports/file-transport").then((module) => {
+		FileTransport = module.FileTransport;
+	});
+} else {
+	import("./transports/browser-storage-transport").then((module) => {
+		BrowserStorageTransport = module.BrowserStorageTransport;
+	});
+	import("./transports/file-transport-browser").then((module) => {
+		BrowserFileTransport = module.BrowserFileTransport;
+	});
+}
 
 /**
  * default logger instance configured with package name and standard options.
@@ -44,18 +45,18 @@ const defaultLogger = new Logger(getPackageName(), {
 	colourize: true,
 });
 
+export default defaultLogger;
 export {
+	FileTransport,
+	BrowserStorageTransport,
+	BrowserFileTransport,
 	Logger,
 	LogLevel,
 	COLOURS,
 	ConsoleTransport,
-	FileTransport,
 	ConsoleFormatter,
 	JsonFormatter,
 };
-
-export default defaultLogger;
-
 export type {
 	FormatterOptions,
 	LogEntry,
